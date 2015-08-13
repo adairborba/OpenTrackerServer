@@ -1,6 +1,6 @@
 import akka.actor.{ Props, ActorSystem }
 
-import handler.{ApiHandlerProps, GPSTrackerHandlerProps, GPSTrackerHandler}
+import handler.{ApiHandlerProps}
 import server.TcpServer
 
 
