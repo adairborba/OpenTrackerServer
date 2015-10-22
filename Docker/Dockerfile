@@ -16,7 +16,7 @@ RUN cd /opt \
 WORKDIR /opt/OpenTrackerServer
 
 RUN cd /opt/OpenTrackerServer \
- && /opt/activator/activator b
+ && /opt/activator/activator compile
 
 # Expose ports.
 EXPOSE 9999
