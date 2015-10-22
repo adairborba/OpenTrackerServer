@@ -11,7 +11,7 @@ sudo docker run -d --name=mosquitto --restart=always -tip 1883:1883 -p 9001:9001
 sudo docker kill mongo
 sudo docker rm   mongo
 sudo docker rmi   mongo
-sudo docker run -d --name=mongo--restart=always -h mongodb mongo
+sudo docker run -d --name=mongo --restart=always -h mongodb mongo
 
 #starting open-tracker
 sudo docker kill open-tracker
