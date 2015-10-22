@@ -1,12 +1,10 @@
 package api
 
-import spray.client.pipelining._
-import spray.http._
 import akka.actor.ActorSystem
-import spray.http.Uri.apply
+import spray.client.pipelining._
 import spray.http.HttpMethods._
-import spray.http.HttpRequest
-import spray.http.HttpMethod
+import spray.http.Uri.apply
+import spray.http.{HttpMethod, HttpRequest, _}
 
 object Api extends Api
 
@@ -28,12 +26,12 @@ class Api {
       entity = HttpEntity(data))
 
   /**
-   * Makes HTTP request
-   * @param uri
-   * @param data
-   * @param method
-   * @return
-   */
+    * Makes HTTP request
+    * @param uri
+    * @param data
+    * @param method
+    * @return
+    */
   def httpRequest(uri: String,
                   method: HttpMethod = GET,
                   data: String = "") = {

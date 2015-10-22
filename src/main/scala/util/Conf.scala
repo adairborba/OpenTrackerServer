@@ -1,16 +1,20 @@
 package util
 
+import akka.actor.{ExtendedActorSystem, Extension, ExtensionId, ExtensionIdProvider}
 import com.typesafe.config.{Config, ConfigFactory}
-import akka.actor.{ExtendedActorSystem, ExtensionIdProvider, ExtensionId, Extension}
 
 class ConfExtensionImpl(config: Config) extends Extension {
   config.checkValid(ConfigFactory.defaultReference)
 
-  val appHostName = config.getString("open-tracker.app.hostname")
-  val appPort = config.getInt("open-tracker.app.port")
   val apiUrl = config.getString("open-tracker.api.url")
 
-  val db = config.getString("open-tracker.db.server")
+  val interface = config.getString("open-tracker.app.interface")
+  val appPort = config.getInt("open-tracker.app.tcpPort")
+  val httpPort = config.getInt("open-tracker.app.httpPort")
+
+  val dbServer = config.getString("open-tracker.db.server")
+  val dbName = config.getString("open-tracker.db.name")
+  val dbPort = config.getString("open-tracker.db.port")
 }
 
 object ConfExtension extends ExtensionId[ConfExtensionImpl] with ExtensionIdProvider {

@@ -1,21 +1,28 @@
 package server
 
-import akka.io.{ IO, Tcp }
 import java.net.InetSocketAddress
+
+import akka.actor.{ActorSystem, ActorLogging, Props}
+import akka.io.{IO, Tcp}
 import handler._
-import akka.actor.Props
 import util.ConfExtension
 
 
 object TcpServer {
   def props(handlerProps: HandlerProps): Props = Props(classOf[TcpServer], handlerProps)
+
+  val system = ActorSystem("server")
+  val interface = ConfExtension(system).interface
+  val port = ConfExtension(system).appPort
+  println("Starting TCP Server at " + interface + ":" + port)
 }
 
-class TcpServer(handlerProps: HandlerProps) extends Server {
+class TcpServer(handlerProps: HandlerProps) extends Server with ActorLogging {
 
   import context.system
 
-  IO(Tcp) ! Tcp.Bind(self, new InetSocketAddress(ConfExtension(system).appHostName, ConfExtension(system).appPort))
+
+  IO(Tcp) ! Tcp.Bind(self, new InetSocketAddress(TcpServer.interface, TcpServer.port))
 
   override def receive = {
     case Tcp.CommandFailed(_: Tcp.Bind) => context stop self
@@ -24,5 +31,4 @@ class TcpServer(handlerProps: HandlerProps) extends Server {
       val handler = context.actorOf(handlerProps.props(sender))
       sender ! Tcp.Register(handler)
   }
-
 }

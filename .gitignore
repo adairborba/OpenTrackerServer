@@ -1,5 +1,6 @@
 .idea
 data/*
+data_test/*
 target
 project/target
 project/project

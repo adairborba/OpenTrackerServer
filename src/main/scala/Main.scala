@@ -1,11 +1,14 @@
-import akka.actor.{ Props, ActorSystem }
-
-import handler.{ApiHandlerProps}
-import server.TcpServer
-
+import akka.actor.ActorSystem
+import api.MongoApi
+import handler.ApiHandlerProps
+import server.{HttpStatusServer, TcpServer}
 
 
 object MainWithApiHandler extends App {
   val system = ActorSystem("server")
-  val service = system.actorOf(TcpServer.props(ApiHandlerProps), "ServerActor")
+
+  MongoApi.getStatus()
+
+  val tcpService = system.actorOf(TcpServer.props(ApiHandlerProps), "TcpServer")
+  val httpService = system.actorOf(HttpStatusServer.props(), "HttpStatusServer")
 }

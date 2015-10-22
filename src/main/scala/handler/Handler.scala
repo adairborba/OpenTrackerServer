@@ -1,8 +1,7 @@
 package handler
 
-import akka.actor.{ActorLogging, Props, ActorRef, Actor}
-import akka.io.Tcp._
-import akka.io.Tcp.Received
+import akka.actor.{Actor, ActorLogging, ActorRef, Props}
+import akka.io.Tcp.{Received, _}
 
 trait HandlerProps {
   def props(connection: ActorRef): Props
