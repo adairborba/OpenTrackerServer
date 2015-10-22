@@ -19,8 +19,6 @@ import scala.concurrent.ExecutionContext.Implicits.global
   */
 object MongoApi {
 
-
-
   val system = ActorSystem("server")
 
   val dbServer = ConfExtension(system).dbServer
@@ -61,5 +59,28 @@ object MongoApi {
     }
     Await.result(status, 4 second)
     status.value.mkString("\n")
+  }
+
+  def insertDataIntoDB(data: String): Unit = {
+    val document = buildJsonDocument(data)
+    MongoApi.insertDocument(document)
+
+  }
+
+  def buildJsonDocument(data: String): BSONDocument = {
+    println(s"Converting\n data $data")
+    val dataArray = data.split(",")
+    val imei: String = dataArray(0)
+    val key: String = dataArray(1)
+    val d: String = dataArray(2) + "," + dataArray(3)
+    val gpsData = dataArray.toIndexedSeq.drop(4).dropRight(2).mkString(",")
+
+    val document = BSONDocument(
+      "imei" -> imei,
+      "key" -> key,
+      "d" -> d,
+      "gps" -> gpsData)
+
+    document
   }
 }

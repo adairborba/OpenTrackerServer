@@ -37,7 +37,7 @@ class HttpStatusServer() extends Server with ActorLogging {
     case HttpRequest(GET, Uri.Path("/"), _, _, _) =>
       sender ! HttpResponse(entity = "UP")
 
-    case HttpRequest(GET, Uri.Path("/status"), _, _, _) => {
+    case HttpRequest(GET, Uri.Path("/test"), _, _, _) => {
       val status = MongoApi.getStatus()
       sender ! HttpResponse(entity = "STATUS=OK\n{" + status + "}")
     }
