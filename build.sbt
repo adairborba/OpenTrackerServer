@@ -4,6 +4,9 @@ version := "1.0"
 
 scalaVersion := "2.11.6"
 
+scalaSource in Compile := baseDirectory.value / "src/main/scala"
+scalaSource in Test := baseDirectory.value / "test/main/scala"
+
 resolvers += "spray repo" at "http://repo.spray.io"
 resolvers += "Sonatype Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots/"
 resolvers += "Typesafe" at "http://repo.typesafe.com/typesafe/releases/"
