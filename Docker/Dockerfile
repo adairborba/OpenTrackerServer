@@ -2,7 +2,7 @@ FROM docker.io/java:openjdk-8-jdk
 
 ENV ACTIVATOR_VER 1.3.4
 
-RUN apt-get install -y unzip git-core nano
+RUN apt-get install -y unzip git-core
 
 RUN cd /opt \
  && wget http://downloads.typesafe.com/typesafe-activator/${ACTIVATOR_VER}/typesafe-activator-${ACTIVATOR_VER}.zip \
