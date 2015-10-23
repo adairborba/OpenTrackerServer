@@ -58,7 +58,7 @@ object MqttApi {
   }
 
   def getEpocTime(date: String): Long = {
-    new SimpleDateFormat("ddMMyyHHmmss").parse(date).getTime / 1000
+    new SimpleDateFormat("ddMMyyHHmmssSS").parse(date).getTime / 1000
   }
 
   def sendData(content: String, topic: String): Unit = {
