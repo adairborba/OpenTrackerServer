@@ -1,10 +1,9 @@
 package handler
 
-import akka.actor.{ActorSystem, ActorRef, Props}
+import akka.actor.{ActorRef, ActorSystem, Props}
 import akka.io.Tcp.Write
 import akka.util.ByteString
-import api.{Api, MongoApi}
-import reactivemongo.bson.BSONDocument
+import api.{Api, MongoApi, MqttApi}
 import spray.http.HttpMethods._
 import util.ConfExtension
 
@@ -30,6 +29,7 @@ class ApiHandler(connection: ActorRef) extends Handler(connection) {
     println("--->" + data)
 
     MongoApi.insertDataIntoDB(data)
+    MqttApi.sendData(data)
 
     val urlWithData: String = ApiHandler.apiUri + Api.buildHttpString(data)
     Api.httpRequest(method = GET, uri = urlWithData) map {
@@ -39,7 +39,6 @@ class ApiHandler(connection: ActorRef) extends Handler(connection) {
       }
     }
   }
-
 
 
   /**

@@ -2,7 +2,7 @@ package server
 
 import java.net.InetSocketAddress
 
-import akka.actor.{ActorSystem, ActorLogging, Props}
+import akka.actor.{ActorLogging, ActorSystem, Props}
 import akka.io.{IO, Tcp}
 import handler._
 import util.ConfExtension

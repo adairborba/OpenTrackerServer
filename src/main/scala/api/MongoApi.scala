@@ -1,17 +1,16 @@
 package api
 
 import akka.actor.ActorSystem
+import reactivemongo.api._
 import reactivemongo.api.collections.bson.BSONCollection
 import reactivemongo.api.commands.WriteResult
 import reactivemongo.bson.BSONDocument
 import util.ConfExtension
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 import scala.concurrent.{Await, Future}
 import scala.util.{Failure, Success}
-
-import reactivemongo.api._
-import scala.concurrent.ExecutionContext.Implicits.global
 
 
 /**
@@ -33,8 +32,8 @@ object MongoApi {
   // Gets a reference to the database "plugin"
   val db = moncon(dbName)
   val coll = db[BSONCollection]("points")
-  coll.create().map ( c =>
-      println(getStatus)
+  coll.create().map(c =>
+    println(getStatus)
   )
 
   def insertDocument(document: BSONDocument): Unit = {
