@@ -29,7 +29,8 @@ class ApiHandler(connection: ActorRef) extends Handler(connection) {
     println("--->" + data)
 
     MongoApi.insertDataIntoDB(data)
-    MqttApi.sendData(data)
+
+    MqttApi.sendData(MqttApi.prepareMessage(data), "owntracks/cars/vw")
 
     val urlWithData: String = ApiHandler.apiUri + Api.buildHttpString(data)
     Api.httpRequest(method = GET, uri = urlWithData) map {

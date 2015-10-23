@@ -17,6 +17,7 @@ object MqttApi {
   val system = ActorSystem("server")
 
   val mqttBroker = ConfExtension(system).mqttBroker
+  println("Using MQTT broker at " + mqttBroker)
 
   def prepareMessage(data: String): String = {
 
@@ -60,11 +61,7 @@ object MqttApi {
     new SimpleDateFormat("ddMMyyHHmmss").parse(date).getTime / 1000
   }
 
-  def sendData(data: String): Unit = {
-
-    val content = prepareMessage(data)
-    val topic = "owntracks/cars/vw";
-
+  def sendData(content: String, topic: String): Unit = {
     val qos = 2;
     val clientId = "OpenTracker";
     val persistence = new MemoryPersistence();
@@ -73,16 +70,11 @@ object MqttApi {
       val sampleClient = new MqttClient(mqttBroker, clientId, persistence);
       val connOpts = new MqttConnectOptions();
       connOpts.setCleanSession(true);
-      System.out.println("Connecting to broker: " + mqttBroker);
-
       sampleClient.connect(connOpts);
-      System.out.println("Connected");
-      System.out.println("Publishing message: " + content);
 
       val message = new MqttMessage(content.getBytes());
       message.setQos(qos);
       sampleClient.publish(topic, message);
-      System.out.println("Message published");
       sampleClient.disconnect();
     } catch {
       case e: Exception =>

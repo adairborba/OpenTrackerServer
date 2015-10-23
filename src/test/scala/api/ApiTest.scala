@@ -36,7 +36,5 @@ class ApiTest extends FunSuite {
     println(mqttStr)
 
     assertResult(expected)(mqttStr)
-
-    MqttApi.sendData(data)
   }
 }
