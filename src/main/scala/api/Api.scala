@@ -1,5 +1,8 @@
 package api
 
+import java.text.SimpleDateFormat
+import java.util.{Date, Calendar}
+
 import akka.actor.ActorSystem
 import spray.client.pipelining._
 import spray.http.HttpMethods._
@@ -39,6 +42,11 @@ class Api {
     pipeline {
       createHttpRequest(uri, method, data)
     }
+
+  }
+
+  def getCurrentDate(now:Date = Calendar.getInstance().getTime()) = {
+    new SimpleDateFormat("ddMMyyHHmmssSS").format(now)
   }
 
   /**
@@ -49,8 +57,8 @@ class Api {
     * @param data
     *
     **/
-  def buildHttpString(data: String): String = {
-    println(s"Converting\n data $data")
+  def buildHttpString(now: String, data: String): String = {
+    println(s"Converting\n data $data | $now")
     val dataArray = data.split(",")
     val imei: String = dataArray(0)
     val key: String = dataArray(1)

@@ -1,5 +1,8 @@
 package handler
 
+import java.text.SimpleDateFormat
+import java.util.{Calendar, Date}
+
 import akka.actor.{ActorRef, ActorSystem, Props}
 import akka.io.Tcp.Write
 import akka.util.ByteString
@@ -18,6 +21,8 @@ object ApiHandler {
 
   val system = ActorSystem("server")
   val apiUri = ConfExtension(system).apiUrl
+
+
 }
 
 class ApiHandler(connection: ActorRef) extends Handler(connection) {
@@ -26,13 +31,15 @@ class ApiHandler(connection: ActorRef) extends Handler(connection) {
     * Makes an api request to GeoLink Server
     */
   def received(data: String) = {
-    println("--->" + data)
+    val now = Api.getCurrentDate()
 
-    MongoApi.insertDataIntoDB(data)
+    println("--->" + now + " " + data)
 
-    MqttApi.sendData(MqttApi.prepareMessage(data), "owntracks/cars/vw")
+    MongoApi.insertDataIntoDB(now, data)
 
-    val urlWithData: String = ApiHandler.apiUri + Api.buildHttpString(data)
+    MqttApi.sendData(MqttApi.prepareMessage(now, data), "owntracks/cars/vw")
+
+    val urlWithData: String = ApiHandler.apiUri + Api.buildHttpString(now, data)
     Api.httpRequest(method = GET, uri = urlWithData) map {
       response => {
         println("Response:" + response.entity.asString)
@@ -40,6 +47,9 @@ class ApiHandler(connection: ActorRef) extends Handler(connection) {
       }
     }
   }
+
+
+
 
 
   /**

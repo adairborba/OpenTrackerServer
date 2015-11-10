@@ -60,13 +60,13 @@ object MongoApi {
     status.value.mkString("\n")
   }
 
-  def insertDataIntoDB(data: String): Unit = {
-    val document = buildJsonDocument(data)
+  def insertDataIntoDB(now:String, data: String): Unit = {
+    val document = buildJsonDocument(now, data)
     MongoApi.insertDocument(document)
 
   }
 
-  def buildJsonDocument(data: String): BSONDocument = {
+  def buildJsonDocument(now:String, data: String): BSONDocument = {
     println(s"Converting\n data $data")
     val dataArray = data.split(",")
     val imei: String = dataArray(0)
@@ -75,6 +75,7 @@ object MongoApi {
     val gpsData = dataArray.toIndexedSeq.drop(4).dropRight(2).mkString(",")
 
     val document = BSONDocument(
+      "timestamp" -> now,
       "imei" -> imei,
       "key" -> key,
       "d" -> d,

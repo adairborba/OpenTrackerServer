@@ -19,7 +19,7 @@ object MqttApi {
   val mqttBroker = ConfExtension(system).mqttBroker
   println("Using MQTT broker at " + mqttBroker)
 
-  def prepareMessage(data: String): String = {
+  def prepareMessage(now:String, data: String): String = {
 
     val dataArray = data.split(",")
 
@@ -35,7 +35,9 @@ object MqttApi {
     //9 80,14,
     //10 12.75,0"
 
-    val time = getEpocTime(dataArray(2) + dataArray(3))
+    //TODO: Compare EPOC from device -> dataArray(2) + dataArray(3) vs $now
+
+    val time = getEpocTime(now)
     val lat = dataArray(4)
     val lon = dataArray(5)
     val bat = dataArray(10)
@@ -62,7 +64,7 @@ object MqttApi {
   }
 
   def sendData(content: String, topic: String): Unit = {
-    val qos = 2;
+    val qos = 0;
     val clientId = "OpenTracker";
     val persistence = new MemoryPersistence();
 
@@ -74,6 +76,7 @@ object MqttApi {
 
       val message = new MqttMessage(content.getBytes());
       message.setQos(qos);
+      message.setRetained(true);
       sampleClient.publish(topic, message);
       sampleClient.disconnect();
     } catch {
