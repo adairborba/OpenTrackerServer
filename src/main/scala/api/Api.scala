@@ -1,7 +1,7 @@
 package api
 
 import java.text.SimpleDateFormat
-import java.util.{Date, Calendar}
+import java.util.{Calendar, Date}
 
 import akka.actor.ActorSystem
 import spray.client.pipelining._
@@ -62,7 +62,7 @@ class Api {
     val dataArray = data.split(",")
     val imei: String = dataArray(0)
     val key: String = dataArray(1)
-    val d: String = mkDate(dataArray(2)) + "," + mkTime(dataArray(3))
+    val d: String = mkDate(now) + "," + mkTime(now.substring(6))
     val gpsData = dataArray.toIndexedSeq.drop(2).dropRight(2).mkString(",")
     val httpData = s"imei=$imei&key=$key&d=$d[$gpsData]{}"
     httpData

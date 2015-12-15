@@ -5,7 +5,7 @@ import reactivemongo.api._
 import reactivemongo.api.collections.bson.BSONCollection
 import reactivemongo.api.commands.WriteResult
 import reactivemongo.bson.BSONDocument
-import util.ConfExtension
+import util.{ConfExtension, DateTimeUtil}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
@@ -50,6 +50,7 @@ object MongoApi {
     val result = coll.stats()
     val status = result map { csr =>
       Map(
+        "Time" -> DateTimeUtil.getCurrentDateTimeAsString,
         "Count=" -> csr.count,
         "StorageSize (mb)=" -> (csr.storageSize / 1048576).toInt,
         "Size (mb)=" -> (csr.size / 1048576).toInt,

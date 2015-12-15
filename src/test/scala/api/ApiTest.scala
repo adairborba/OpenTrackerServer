@@ -26,12 +26,12 @@ class ApiTest extends FunSuite {
   }
 
   test("API string should match expected 1") {
-    val expectedData = "imei=865733021674619&key=XXXXXXXX&d=10/08/15,23:13:52+0[100815,23135200,50.012516,14.427183,0.00,256.80,80.43,62,17]{}"
+    val expectedData = "imei=865733021674619&key=XXXXXXXX&d=22/10/15,21:31:58+0[100815,23135200,50.012516,14.427183,0.00,256.80,80.43,62,17]{}"
     val data: String = "865733021674619,XXXXXXXX,100815,23135200,50.012516,14.427183,0.00,256.80,80.43,62,17,19.61,1"
 
     val reqest = Api.buildHttpString(now, data)
-    println(expectedData)
-    println(reqest)
+    println("Exp:" + expectedData)
+    println("Act:" + reqest)
 
     assertResult(expectedData)(reqest)
   }
@@ -64,6 +64,7 @@ class ApiTest extends FunSuite {
   test("EPOC time should be OK") {
     val expected: String = "22101521315800"
     val time: Long = MqttApi.getEpocTime(expected)
+    assertResult(time)(1445542318) //1450023544
 
     val timeStr = new SimpleDateFormat("ddMMyyHHmmssSS").format(new Date(time*1000))
     assertResult(expected)(timeStr)
