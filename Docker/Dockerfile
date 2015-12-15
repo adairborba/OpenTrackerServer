@@ -7,16 +7,16 @@ RUN apt-get install -y unzip git-core
 RUN cd /opt \
  && wget http://downloads.typesafe.com/typesafe-activator/${ACTIVATOR_VER}/typesafe-activator-${ACTIVATOR_VER}.zip \
  && unzip typesafe-activator-${ACTIVATOR_VER}.zip \
- && ln -s /opt/activator-dist-${ACTIVATOR_VER}/opt/activator \
- && rm -f /opt/typesafe-activator-${ACTIVATOR_VER}.zip
+ && ln -s /opt/activator-dist-${ACTIVATOR_VER} /opt/activator \
+ && rm -f /opt/typesafe-activator-${ACTIVATOR_VER}.zip \
+ && ls /opt
 
 RUN cd /opt \
  && git clone https://github.com/dimetron/OpenTrackerServer.git
 
 WORKDIR /opt/OpenTrackerServer
 
-RUN cd /opt/OpenTrackerServer \
- && /opt/activator/activator compile
+#RUN cd /opt/OpenTrackerServer \&& /opt/activator/activator publishLocal
 
 # Expose ports.
 EXPOSE 9999
