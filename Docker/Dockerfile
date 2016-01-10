@@ -2,6 +2,8 @@ FROM docker.io/java:openjdk-8-jdk
 
 ENV ACTIVATOR_VER 1.3.7
 
+ENV JAVA_OPTS="-Xms512m -Xmx512m -XX:MetaspaceSize=64m"
+
 RUN apt-get install -y unzip git-core
 
 RUN cd /opt \
@@ -21,6 +23,7 @@ RUN cd /opt/OpenTrackerServer \
 
 # Expose ports.
 EXPOSE 9999
+EXPOSE 8080
 
 # Define an entry point.
 ENTRYPOINT ["/opt/activator/activator", "run", "-Dhttp.address=0.0.0.0"]
