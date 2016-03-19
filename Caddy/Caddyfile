@@ -1,0 +1,10 @@
+https://carmonit.com {
+  root ./root
+  gzip
+  log ./carmonit.com.access.log
+  proxy /status 127.0.0.1:8080 {
+   without /status
+  }
+  proxy /test  127.0.0.1:8080
+}
+
