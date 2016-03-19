@@ -1,5 +1,5 @@
 import akka.actor.ActorSystem
-import api.{MqttApi, MongoApi}
+import api.{MongoApi, MqttApi}
 import handler.ApiHandlerProps
 import server.{HttpStatusServer, TcpServer}
 

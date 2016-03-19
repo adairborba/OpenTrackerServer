@@ -38,8 +38,6 @@ abstract class Handler(val connection: ActorRef) extends Actor with ActorLogging
       stop()
   }
 
-  def received(str: String): Unit
-
   def peerClosed() {
     log.info("PeerClosed")
   }
@@ -64,5 +62,7 @@ abstract class Handler(val connection: ActorRef) extends Actor with ActorLogging
     log.info("Stopping")
     context stop self
   }
+
+  def received(str: String): Unit
 }
 

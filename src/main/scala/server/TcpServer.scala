@@ -9,11 +9,11 @@ import util.ConfExtension
 
 
 object TcpServer {
-  def props(handlerProps: HandlerProps): Props = Props(classOf[TcpServer], handlerProps)
-
   val system = ActorSystem("server")
   val interface = ConfExtension(system).interface
   val port = ConfExtension(system).appPort
+
+  def props(handlerProps: HandlerProps): Props = Props(classOf[TcpServer], handlerProps)
   println("Starting TCP Server at " + interface + ":" + port)
 }
 

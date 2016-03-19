@@ -17,19 +17,9 @@ class Api {
 
   import system.dispatcher
 
-  //To be able to mock
-  def sendAndReceive = sendReceive
-
-  def createHttpRequest(uri: String,
-                        method: HttpMethod,
-                        data: String) =
-
-    HttpRequest(method = method,
-      uri = uri,
-      entity = HttpEntity(data))
-
   /**
     * Makes HTTP request
+    *
     * @param uri
     * @param data
     * @param method
@@ -45,7 +35,24 @@ class Api {
 
   }
 
-  def getCurrentDate(now:Date = Calendar.getInstance().getTime()) = {
+  //To be able to mock
+  def sendAndReceive = sendReceive
+
+  def createHttpRequest(uri: String,
+                        method: HttpMethod,
+                        data: String) =
+
+    HttpRequest(method = method,
+      uri = uri,
+      entity = HttpEntity(data))
+
+  /**
+    * 151215234959553
+    *
+    * @param now
+    * @return
+    */
+  def getCurrentDate(now: Date = Calendar.getInstance().getTime()) = {
     new SimpleDateFormat("ddMMyyHHmmssSS").format(now)
   }
 
@@ -54,6 +61,7 @@ class Api {
     * data 865733021674619,XXXXXXXXXXX,10/22/15,23:21:39+0,100815,23214000,50.012516,14.427183,0.00,256.80,80.43,59,18,19.61,1
     *
     * Build HTTP string from RAW comma separated data
+    *
     * @param data
     *
     **/

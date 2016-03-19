@@ -13,11 +13,11 @@ import scala.concurrent.duration._
 
 
 object HttpStatusServer {
-  def props(): Props = Props(classOf[HttpStatusServer])
-
   val system = ActorSystem("server")
   val interface = ConfExtension(system).interface
   val port = ConfExtension(system).httpPort
+
+  def props(): Props = Props(classOf[HttpStatusServer])
 
   println("Starting HTTP Server at " + interface + ":" + port)
 }

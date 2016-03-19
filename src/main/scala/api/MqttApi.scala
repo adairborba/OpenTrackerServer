@@ -6,7 +6,7 @@ import akka.actor.ActorSystem
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence
 import org.eclipse.paho.client.mqttv3.{MqttClient, MqttConnectOptions, MqttMessage}
 import spray.json._
-import util.ConfExtension
+import util.{ConfExtension, EncryptionProvider}
 
 
 /**
@@ -17,9 +17,11 @@ object MqttApi {
   val system = ActorSystem("server")
 
   val mqttBroker = ConfExtension(system).mqttBroker
+  val key = ConfExtension(system).key
+
   println("Using MQTT broker at " + mqttBroker)
 
-  def prepareMessage(now:String, data: String): String = {
+  def prepareMessage(now: String, data: String): String = {
 
     val dataArray = data.split(",")
 
@@ -56,7 +58,14 @@ object MqttApi {
       "vac" : "-1",
       "vel" : "-1"
       }"""
-    msg.parseJson.compactPrint
+
+    val msgEnc = EncryptionProvider.encrypt(msg, key)
+    val mqtt =
+      s"""{
+          "data"  : "$msgEnc",
+          "_type" : "encrypted"
+      }"""
+    mqtt.parseJson.compactPrint
   }
 
   def getEpocTime(date: String): Long = {
@@ -69,19 +78,19 @@ object MqttApi {
     val persistence = new MemoryPersistence();
 
     try {
-      val sampleClient = new MqttClient(mqttBroker, clientId, persistence);
-      val connOpts = new MqttConnectOptions();
-      connOpts.setCleanSession(true);
-      sampleClient.connect(connOpts);
+      val sampleClient = new MqttClient(mqttBroker, clientId, persistence)
+      val connOpts = new MqttConnectOptions()
+      connOpts.setCleanSession(true)
+      sampleClient.connect(connOpts)
 
       val message = new MqttMessage(content.getBytes());
       message.setQos(qos);
-      message.setRetained(true);
+      message.setRetained(true)
       sampleClient.publish(topic, message);
-      sampleClient.disconnect();
+      sampleClient.disconnect()
     } catch {
       case e: Exception =>
-        e.printStackTrace();
+        e.printStackTrace()
     }
   }
 }

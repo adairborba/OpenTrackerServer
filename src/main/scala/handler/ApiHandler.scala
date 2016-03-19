@@ -1,8 +1,5 @@
 package handler
 
-import java.text.SimpleDateFormat
-import java.util.{Calendar, Date}
-
 import akka.actor.{ActorRef, ActorSystem, Props}
 import akka.io.Tcp.Write
 import akka.util.ByteString
@@ -17,10 +14,9 @@ object ApiHandlerProps extends HandlerProps {
 }
 
 object ApiHandler {
-  private val newLine = ByteString("\n")
-
   val system = ActorSystem("server")
   val apiUri = ConfExtension(system).apiUrl
+  private val newLine = ByteString("\n")
 
 
 }
@@ -49,11 +45,9 @@ class ApiHandler(connection: ActorRef) extends Handler(connection) {
   }
 
 
-
-
-
   /**
     * Sends given data over connection to client, appending a newline
+    *
     * @param response
     */
   def respond(response: String) {

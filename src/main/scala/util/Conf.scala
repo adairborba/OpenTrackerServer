@@ -17,6 +17,7 @@ class ConfExtensionImpl(config: Config) extends Extension {
   val dbPort = config.getString("open-tracker.db.port")
 
   val mqttBroker = config.getString("open-tracker.mqtt.broker")
+  val key = config.getString("open-tracker.mqtt.key")
 }
 
 object ConfExtension extends ExtensionId[ConfExtensionImpl] with ExtensionIdProvider {

@@ -3,8 +3,12 @@ import java.text.SimpleDateFormat
 import java.util.{Calendar, Date}
 
 import api.{Api, MqttApi}
+import org.junit.runner.RunWith
 import org.scalatest.FunSuite
+import org.scalatest.junit.JUnitRunner
 
+
+@RunWith(classOf[JUnitRunner])
 class ApiTest extends FunSuite {
 
   val now = "22101521315800"
@@ -56,7 +60,7 @@ class ApiTest extends FunSuite {
     println(expected)
     println(mqttStr)
 
-    assertResult(expected)(mqttStr)
+    assert(mqttStr.startsWith("{\"data\":\""))
 
     MqttApi.sendData(mqttStr, "owntracks/IDEA/Test")
   }
@@ -66,7 +70,10 @@ class ApiTest extends FunSuite {
     val time: Long = MqttApi.getEpocTime(expected)
     assertResult(time)(1445542318) //1450023544
 
-    val timeStr = new SimpleDateFormat("ddMMyyHHmmssSS").format(new Date(time*1000))
-    assertResult(expected)(timeStr)
+    val format: SimpleDateFormat = new SimpleDateFormat("ddMMyyHHmmssSS")
+
+    assertResult("22101521315800")(format.format(new Date(time * 1000)))
+    assertResult("06081517100400")(format.format(new Date(1438873804L * 1000)))
+    assertResult("16121502103000")(format.format(new Date(1450228230L * 1000)))
   }
 }
